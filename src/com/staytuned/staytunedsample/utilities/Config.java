@@ -8,6 +8,7 @@ public class Config {
 	public static final long MIN_TIME = 5 * 1000 * 60;
 	public static final float MIN_DIST = 1000;
 	public static final String TABLE_MESSAGES = "MESSAGES";
+	public static final String TABLE_NAMES = "NAMES";
 	public static final String KEY_ID = "id";
 	public static final String DATABASE_NAME = "STAYTUNED";
 	public static final int DATABASE_VERSION = 1;
@@ -16,6 +17,7 @@ public class Config {
 	public static final String KEY_LONGITUDE = "longitude";
 	public static final String KEY_TITLE = "title";
 	public static final String KEY_TIME = "time";
+	public static final String KEY_URI = "uri";
 	public static final String KEY_USERNAME = "username_1";
 	public static final String KEY_TIMESTAMP = "timestamp";
 	public static final String PREF_NAME = "staytunedPrefs";

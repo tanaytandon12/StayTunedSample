@@ -6,15 +6,12 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.location.Criteria;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +29,7 @@ import android.widget.Toast;
 
 import com.staytuned.staytunedsample.adapter.CustomAdapter;
 import com.staytuned.staytunedsample.database.CustomDatabaseHelper;
+import com.staytuned.staytunedsample.model.Item;
 import com.staytuned.staytunedsample.service.PeriodicService;
 import com.staytuned.staytunedsample.utilities.Config;
 import com.staytuned.staytunedsample.utilities.CustomUtilities;
@@ -49,33 +47,34 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,
 	private Spinner mSpinner;
 	private ListView mListView;
 
-	private SharedPreferences msharePrefs;
-	private SharedPreferences.Editor editor;
-
 	private CustomDatabaseHelper helper;
 	private HashMap<String, String> criteriaMap = new HashMap<>();
-	private Cursor mCursor;
+	private ArrayList<Item> mItems;
 	private CustomAdapter mAdapter;
-	
+
+	private String userName, userImage;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		msharePrefs = getSharedPreferences(Config.PREF_NAME,
-				Context.MODE_PRIVATE);
-		editor = msharePrefs.edit();
+		userImage = "android.resource://" + getPackageName() + "/drawable/user";
 
+		// the views to be toggled
 		loginView = findViewById(R.id.login_box);
 		itemView = findViewById(R.id.list_box);
 
+		// DB helper
 		helper = new CustomDatabaseHelper(MainActivity.this);
-		
+
 		mListView = (ListView) findViewById(R.id.item_list);
-		mAdapter = new CustomAdapter(MainActivity.this, mCursor);
-		
+
+		mItems = new ArrayList<>();
+		mAdapter = new CustomAdapter(MainActivity.this, mItems);
+
 		mListView.setAdapter(mAdapter);
-		
+
 		mSpinner = (Spinner) findViewById(R.id.spinner1);
 		List<String> list = new ArrayList<String>();
 		list.add("Place");
@@ -83,7 +82,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,
 
 		criteriaMap.put("Place", Config.KEY_TITLE);
 		criteriaMap.put("Time", Config.KEY_TIMESTAMP);
-		
+
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, list);
 
@@ -92,7 +91,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,
 
 		mSpinner.setAdapter(dataAdapter);
 		mSpinner.setOnItemSelectedListener(this);
-		
+
 		findViewById(R.id.login_btn).setOnClickListener(this);
 		findViewById(R.id.enable_bttn).setOnClickListener(this);
 
@@ -105,7 +104,6 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,
 		setImageView.setOnClickListener(this);
 
 		doLocationBasedAction();
-		doPrefBasedAction();
 
 	}
 
@@ -113,7 +111,6 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
-		doPrefBasedAction();
 		return true;
 	}
 
@@ -124,8 +121,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_logout) {
-			editor.clear().commit();
-			doPrefBasedAction();
+			toogleView(false);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -141,12 +137,30 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,
 
 			break;
 		case R.id.login_btn:
-			String name = usrNameEdtTxt.getText().toString();
-			if (CustomUtilities.validateName(name)) {
+			userName = usrNameEdtTxt.getText().toString();
+			if (CustomUtilities.validateName(userName)) {
 				loginView.setVisibility(View.GONE);
 				itemView.setVisibility(View.VISIBLE);
-				usrNameTextView.setText(name);
-				editor.putString(Config.PREF_USR_NAME, name).commit();
+				usrNameTextView.setText(userName);
+				Cursor cx = helper.doesUserExist(userName);
+				if (cx.getCount() == 0) {
+					helper.insertUserName(userName, userImage);
+				} else {
+					cx.moveToFirst();
+					userImage = cx.getString(cx.getColumnIndex(Config.KEY_URI));
+					userImageView.setImageURI(Uri.parse(userImage));
+					setImageView.setImageURI(Uri.parse(userImage));
+				}
+				if (findViewById(R.id.enable_bttn).getVisibility() == View.GONE) {
+					usrNameEdtTxt.setText("");
+
+					toogleView(true);
+				} else {
+					Toast.makeText(
+							MainActivity.this,
+							"The service will start only when you enable location",
+							Toast.LENGTH_LONG).show();
+				}
 			} else {
 				Toast.makeText(MainActivity.this, "Enter a valid name",
 						Toast.LENGTH_SHORT).show();
@@ -172,10 +186,13 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,
 			}
 		} else if (requestCode == PHOTO_PICKER_ID && resultCode == RESULT_OK) {
 			Uri uri = data.getData();
-			Log.d("TAG", "wtf now");
+			userImage = uri.toString();
+			if (userName != null) {
+				helper.updateUserTable(userName, userImage);
+			}
 			setImageView.setImageURI(uri);
 			userImageView.setImageURI(uri);
-			editor.putString(Config.PREF_USR_IMG, uri.toString()).commit();
+
 		}
 	}
 
@@ -188,44 +205,41 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,
 					Toast.LENGTH_LONG).show();
 			(findViewById(R.id.enable_bttn)).setVisibility(View.VISIBLE);
 		} else {
-			Intent intent = new Intent(MainActivity.this, PeriodicService.class);
-			startService(intent);
+			findViewById(R.id.enable_bttn).setVisibility(View.GONE);
 		}
 
 	}
 
-	private void doPrefBasedAction() {
-		String name = msharePrefs.getString(Config.PREF_USR_NAME, "Jane Doe");
-		if (name == null) {
-			loginView.setVisibility(View.VISIBLE);
-			Uri imgUri = Uri.parse("android.resource://" + getPackageName()
-					+ "/drawable/user");
-			setImageView.setImageURI(imgUri);
-			itemView.setVisibility(View.GONE);
-		} else {
+	private void toogleView(boolean flag) {
+		if (flag) {
 			loginView.setVisibility(View.GONE);
-			String prefUri = msharePrefs.getString(Config.PREF_USR_IMG, null);
-			if (prefUri != null) {
-				userImageView.setImageURI(Uri.parse(prefUri));
-			}
 			itemView.setVisibility(View.VISIBLE);
+			mItems.clear();
+			mItems.addAll(helper.getAllRows(userName,
+					criteriaMap.get(mSpinner.getSelectedItem().toString())));
+			mAdapter.notifyDataSetChanged();
+			Intent intent = new Intent(MainActivity.this, PeriodicService.class);
+			CustomUtilities.setUserName(userName);
+			startService(intent);
+		} else {
+			loginView.setVisibility(View.VISIBLE);
+			itemView.setVisibility(View.GONE);
 		}
 	}
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
-		
-		String criteria =  criteriaMap.get(parent.getItemAtPosition(position).toString());
-		String userName = msharePrefs.getString(Config.PREF_USR_NAME, "Jane Doe");
-		mCursor = helper.getAllRows(userName, criteria);
+
+		String criteria = criteriaMap.get(parent.getItemAtPosition(position)
+				.toString());
+		mItems.clear();
+		mItems.addAll(helper.getAllRows(userName, criteria));
 		mAdapter.notifyDataSetChanged();
-		Log.d("TAG", "hitler " + mCursor.getCount());
 	}
 
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
-		// TODO Auto-generated method stub
-		
+
 	}
 }

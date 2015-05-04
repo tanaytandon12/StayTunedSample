@@ -7,7 +7,16 @@ import java.util.regex.Pattern;
 public class CustomUtilities {
 
 	private static Calendar instance;
-
+	private static String userName;
+	
+	public static void setUserName(String name) {
+		userName = name;
+	}
+	
+	public static String getuserName() {
+		return userName;
+	}
+	
 	public static String getTime() {
 		getCalendarInstance();
 		String time = getHour() + " : " + getMinute();

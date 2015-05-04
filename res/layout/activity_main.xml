@@ -64,7 +64,8 @@
     <RelativeLayout
         android:id="@+id/list_box"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:visibility="gone" >
 
         <ImageView
             android:id="@+id/usr_img"
@@ -99,15 +100,15 @@
             android:divider="@android:color/transparent"
             android:dividerHeight="5dp" >
         </ListView>
-
-        <Button
-            android:id="@+id/enable_bttn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:text="ENABLE LOCATION SERVICES"
-            android:textSize="15sp"
-            android:visibility="gone" />
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/enable_bttn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="ENABLE LOCATION SERVICES"
+        android:textSize="15sp"
+        android:visibility="gone" />
 
 </RelativeLayout>

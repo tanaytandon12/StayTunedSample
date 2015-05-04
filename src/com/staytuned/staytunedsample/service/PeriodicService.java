@@ -48,7 +48,8 @@ public class PeriodicService extends Service implements LocationListener,
 	private CustomDatabaseHelper helper;
 	private WindowManager wm;
 	private WindowManager.LayoutParams params;
-
+	private String userName;
+	
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
@@ -58,6 +59,8 @@ public class PeriodicService extends Service implements LocationListener,
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		JSONController.setRequestListener(this);
 
+		userName = CustomUtilities.getuserName();
+		
 		wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
 
 		helper = new CustomDatabaseHelper(PeriodicService.this);
@@ -117,8 +120,7 @@ public class PeriodicService extends Service implements LocationListener,
 	@Override
 	public void postRequest(Object object) {
 		String result = object.toString();
-		Log.d("TAG", result);
-
+		
 		try {
 			JSONObject obj = new JSONObject(result);
 			JSONArray results = obj.getJSONArray("results");
@@ -150,9 +152,6 @@ public class PeriodicService extends Service implements LocationListener,
 						Bitmap bitmap = (Bitmap) result;
 						String key = name + CustomUtilities.getTimeBasedKey();
 						String time = CustomUtilities.getTime();
-						String userName = getSharedPreferences(
-								Config.PREF_NAME, Context.MODE_PRIVATE)
-								.getString(Config.PREF_USR_NAME, "Jane Doe");
 						helper.insertRow(key, message, name, time, latitude,
 								longitude, userName);
 						PowerManager mPowerManager = (PowerManager) PeriodicService.this

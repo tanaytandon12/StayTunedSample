@@ -345,7 +345,7 @@ int id action_bar_spinner 0x7f090002
 int id action_bar_subtitle 0x7f09001f
 int id action_bar_title 0x7f09001e
 int id action_context_bar 0x7f090032
-int id action_logout 0x7f09004e
+int id action_logout 0x7f090052
 int id action_menu_divider 0x7f090005
 int id action_menu_presenter 0x7f090006
 int id action_mode_bar 0x7f09002e
@@ -374,7 +374,11 @@ int id ifRoom 0x7f090016
 int id image 0x7f090023
 int id img_user 0x7f090041
 int id img_user_txt 0x7f090042
+int id item_content 0x7f09004c
+int id item_lat_lng 0x7f09004d
 int id item_list 0x7f090048
+int id item_time 0x7f09004b
+int id item_title 0x7f09004a
 int id listMode 0x7f09000a
 int id list_box 0x7f090044
 int id list_item 0x7f090025
@@ -384,10 +388,10 @@ int id middle 0x7f09001d
 int id never 0x7f090017
 int id none 0x7f09000f
 int id normal 0x7f09000b
-int id notif_content 0x7f09004d
-int id notif_icon 0x7f09004a
-int id notif_time 0x7f09004c
-int id notif_title 0x7f09004b
+int id notif_content 0x7f090051
+int id notif_icon 0x7f09004e
+int id notif_time 0x7f090050
+int id notif_title 0x7f09004f
 int id progress_circular 0x7f090007
 int id progress_horizontal 0x7f090008
 int id radio 0x7f09002b
@@ -441,7 +445,7 @@ int layout abc_search_dropdown_item_icons_2line 0x7f030014
 int layout abc_search_view 0x7f030015
 int layout abc_simple_dropdown_hint 0x7f030016
 int layout activity_main 0x7f030017
-int layout fragment_location 0x7f030018
+int layout item_location 0x7f030018
 int layout notif_location 0x7f030019
 int layout support_simple_spinner_dropdown_item 0x7f03001a
 int menu main 0x7f0c0000

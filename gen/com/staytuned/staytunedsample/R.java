@@ -1646,7 +1646,7 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f09001f;
         public static final int action_bar_title=0x7f09001e;
         public static final int action_context_bar=0x7f090032;
-        public static final int action_logout=0x7f09004e;
+        public static final int action_logout=0x7f090052;
         public static final int action_menu_divider=0x7f090005;
         public static final int action_menu_presenter=0x7f090006;
         public static final int action_mode_bar=0x7f09002e;
@@ -1675,7 +1675,11 @@ containing a value of this type.
         public static final int image=0x7f090023;
         public static final int img_user=0x7f090041;
         public static final int img_user_txt=0x7f090042;
+        public static final int item_content=0x7f09004c;
+        public static final int item_lat_lng=0x7f09004d;
         public static final int item_list=0x7f090048;
+        public static final int item_time=0x7f09004b;
+        public static final int item_title=0x7f09004a;
         public static final int listMode=0x7f09000a;
         public static final int list_box=0x7f090044;
         public static final int list_item=0x7f090025;
@@ -1685,10 +1689,10 @@ containing a value of this type.
         public static final int never=0x7f090017;
         public static final int none=0x7f09000f;
         public static final int normal=0x7f09000b;
-        public static final int notif_content=0x7f09004d;
-        public static final int notif_icon=0x7f09004a;
-        public static final int notif_time=0x7f09004c;
-        public static final int notif_title=0x7f09004b;
+        public static final int notif_content=0x7f090051;
+        public static final int notif_icon=0x7f09004e;
+        public static final int notif_time=0x7f090050;
+        public static final int notif_title=0x7f09004f;
         public static final int progress_circular=0x7f090007;
         public static final int progress_horizontal=0x7f090008;
         public static final int radio=0x7f09002b;
@@ -1768,7 +1772,7 @@ containing a value of this type.
         public static final int abc_search_view=0x7f030015;
         public static final int abc_simple_dropdown_hint=0x7f030016;
         public static final int activity_main=0x7f030017;
-        public static final int fragment_location=0x7f030018;
+        public static final int item_location=0x7f030018;
         public static final int notif_location=0x7f030019;
         public static final int support_simple_spinner_dropdown_item=0x7f03001a;
     }
