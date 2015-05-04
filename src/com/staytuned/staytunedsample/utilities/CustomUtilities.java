@@ -1,6 +1,8 @@
 package com.staytuned.staytunedsample.utilities;
 
 import java.util.Calendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CustomUtilities {
 
@@ -44,4 +46,13 @@ public class CustomUtilities {
 	private static int getMinute() {
 		return instance.get(Calendar.MINUTE);
 	}
+	
+	public static boolean validateName(String txt) {
+		 
+	    String regx = "^[\\p{L} .'-]+$";
+	    Pattern pattern = Pattern.compile(regx,Pattern.CASE_INSENSITIVE);
+	    Matcher matcher = pattern.matcher(txt);
+	    return matcher.find();
+	 
+	} 
 }

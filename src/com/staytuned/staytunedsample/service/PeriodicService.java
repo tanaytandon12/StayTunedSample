@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
+import com.staytuned.staytunedsample.MainActivity;
 import com.staytuned.staytunedsample.R;
 import com.staytuned.staytunedsample.database.CustomDatabaseHelper;
 import com.staytuned.staytunedsample.listener.RequestListener;
@@ -148,7 +150,11 @@ public class PeriodicService extends Service implements LocationListener,
 						Bitmap bitmap = (Bitmap) result;
 						String key = name + CustomUtilities.getTimeBasedKey();
 						String time = CustomUtilities.getTime();
-						helper.insertRow(key, message, name, time);
+						String userName = getSharedPreferences(
+								Config.PREF_NAME, Context.MODE_PRIVATE)
+								.getString(Config.PREF_USR_NAME, "Jane Doe");
+						helper.insertRow(key, message, name, time, latitude,
+								longitude, userName);
 						PowerManager mPowerManager = (PowerManager) PeriodicService.this
 								.getSystemService(Context.POWER_SERVICE);
 						if (mPowerManager.isScreenOn()) {
@@ -212,6 +218,10 @@ public class PeriodicService extends Service implements LocationListener,
 							&& (params.y - initialY) < 20) {
 						wm.removeView(view);
 						// start the activity here
+						Intent intent = new Intent(PeriodicService.this,
+								MainActivity.class);
+						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						startActivity(intent);
 					}
 					return true;
 				case MotionEvent.ACTION_MOVE:
@@ -236,6 +246,12 @@ public class PeriodicService extends Service implements LocationListener,
 		RemoteViews mRemoteViews = new RemoteViews(getPackageName(),
 				R.layout.notif_location);
 
+		Intent intent = new Intent(PeriodicService.this, MainActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+		PendingIntent mPendingIntent = PendingIntent.getActivity(
+				PeriodicService.this, 0, intent, 0);
+
 		mRemoteViews.setTextViewText(R.id.notif_title, name);
 		mRemoteViews.setTextViewText(R.id.notif_content, message);
 		mRemoteViews.setTextViewText(R.id.notif_time, time);
@@ -243,6 +259,7 @@ public class PeriodicService extends Service implements LocationListener,
 
 		notifBuilder.setSmallIcon(R.drawable.ic_launcher);
 		notifBuilder.setContent(mRemoteViews);
+		notifBuilder.setContentIntent(mPendingIntent);
 
 		NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		int id = NotificationID.getID(key);

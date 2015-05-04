@@ -12,7 +12,13 @@ public class Config {
 	public static final String DATABASE_NAME = "STAYTUNED";
 	public static final int DATABASE_VERSION = 1;
 	public static final String KEY_MESSAGE = "msg";
+	public static final String KEY_LATITUDE = "latitude";
+	public static final String KEY_LONGITUDE = "longitude";
 	public static final String KEY_TITLE = "title";
 	public static final String KEY_TIME = "time";
+	public static final String KEY_USERNAME = "username_1";
 	public static final String KEY_TIMESTAMP = "timestamp";
+	public static final String PREF_NAME = "staytunedPrefs";
+	public static final String PREF_USR_NAME = "user_name";
+	public static final String PREF_USR_IMG = "user_image";
 }

@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="5dp"
+            android:padding="10dp"
             android:text="ENTER DETAILS"
             android:textColor="#000"
             android:textSize="18sp" />
@@ -37,6 +37,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:padding="10dp"
             android:src="@drawable/user" />
 
         <TextView
@@ -44,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:padding="10dp"
             android:text="SELECT AN IMAGE"
             android:textColor="#000"
             android:textSize="15sp" />
@@ -53,6 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:padding="10dp"
             android:text="LOGIN"
             android:textColor="#000"
             android:textSize="15sp" />
@@ -81,6 +84,13 @@
             android:textColor="@android:color/black"
             android:textSize="15sp" />
 
+        <Spinner
+            android:id="@+id/spinner1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/usr_name"
+            android:layout_below="@id/usr_name" />
+
         <ListView
             android:id="@+id/item_list"
             android:layout_width="match_parent"
@@ -95,9 +105,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:visibility="gone"
             android:text="ENABLE LOCATION SERVICES"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:visibility="gone" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -20,7 +20,9 @@ public class CustomDatabaseHelper extends SQLiteOpenHelper {
 		String create = "CREATE TABLE " + Config.TABLE_MESSAGES + "("
 				+ Config.KEY_TIMESTAMP + " INTEGER PRIMARY KEY, "
 				+ Config.KEY_ID + " TEXT ," + Config.KEY_MESSAGE + " TEXT,"
-				+ Config.KEY_TITLE + " TEXT," + Config.KEY_TIME + " TEXT)";
+				+ Config.KEY_TITLE + " TEXT," + Config.KEY_TIME + " TEXT,"
+				+ Config.KEY_USERNAME + " TEXT," + Config.KEY_LATITUDE
+				+ " REAL, " + Config.KEY_LONGITUDE + " REAL)";
 		Log.d("TAG", create);
 		db.execSQL(create);
 	}
@@ -32,7 +34,8 @@ public class CustomDatabaseHelper extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 
-	public void insertRow(String id, String message, String title, String time) {
+	public void insertRow(String id, String message, String title, String time,
+			double latitude, double longitude, String userName) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(Config.KEY_ID, id);
@@ -40,13 +43,20 @@ public class CustomDatabaseHelper extends SQLiteOpenHelper {
 		values.put(Config.KEY_TITLE, title);
 		values.put(Config.KEY_TIME, time);
 		values.put(Config.KEY_TIMESTAMP, System.currentTimeMillis());
+		values.put(Config.KEY_LATITUDE, latitude);
+		values.put(Config.KEY_LONGITUDE, longitude);
+		values.put(Config.KEY_USERNAME, userName);
 		// Inserting Row
+		Log.d("TAG", values.toString());
 		db.insert(Config.TABLE_MESSAGES, null, values);
 	}
 
-	public Cursor getAllRows() {
+	public Cursor getAllRows(String userName, String criteria) {
 		SQLiteDatabase db = this.getReadableDatabase();
-		String sql = "SELECT * FROM " + Config.TABLE_MESSAGES + " ORDER BY " + Config.KEY_TIMESTAMP + " DESC";
+		String sql = "SELECT * FROM " + Config.TABLE_MESSAGES + " WHERE "
+				+ Config.KEY_USERNAME + " LIKE '" + userName + "' ORDER BY "
+				+ criteria + " DESC";
+		Log.d("TAG", sql);
 		return db.rawQuery(sql, null);
 	}
 }

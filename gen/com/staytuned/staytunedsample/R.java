@@ -1646,7 +1646,7 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f09001f;
         public static final int action_bar_title=0x7f09001e;
         public static final int action_context_bar=0x7f090032;
-        public static final int action_logout=0x7f09004d;
+        public static final int action_logout=0x7f09004e;
         public static final int action_menu_divider=0x7f090005;
         public static final int action_menu_presenter=0x7f090006;
         public static final int action_mode_bar=0x7f09002e;
@@ -1664,7 +1664,7 @@ containing a value of this type.
         public static final int dropdown=0x7f09001a;
         public static final int edit_query=0x7f090033;
         public static final int edt_name=0x7f090040;
-        public static final int enable_bttn=0x7f090048;
+        public static final int enable_bttn=0x7f090049;
         public static final int end=0x7f09001c;
         public static final int expand_activities_button=0x7f090022;
         public static final int expanded_menu=0x7f090028;
@@ -1675,7 +1675,7 @@ containing a value of this type.
         public static final int image=0x7f090023;
         public static final int img_user=0x7f090041;
         public static final int img_user_txt=0x7f090042;
-        public static final int item_list=0x7f090047;
+        public static final int item_list=0x7f090048;
         public static final int listMode=0x7f09000a;
         public static final int list_box=0x7f090044;
         public static final int list_item=0x7f090025;
@@ -1685,10 +1685,10 @@ containing a value of this type.
         public static final int never=0x7f090017;
         public static final int none=0x7f09000f;
         public static final int normal=0x7f09000b;
-        public static final int notif_content=0x7f09004c;
-        public static final int notif_icon=0x7f090049;
-        public static final int notif_time=0x7f09004b;
-        public static final int notif_title=0x7f09004a;
+        public static final int notif_content=0x7f09004d;
+        public static final int notif_icon=0x7f09004a;
+        public static final int notif_time=0x7f09004c;
+        public static final int notif_title=0x7f09004b;
         public static final int progress_circular=0x7f090007;
         public static final int progress_horizontal=0x7f090008;
         public static final int radio=0x7f09002b;
@@ -1706,6 +1706,7 @@ containing a value of this type.
         public static final int showCustom=0x7f090010;
         public static final int showHome=0x7f090011;
         public static final int showTitle=0x7f090012;
+        public static final int spinner1=0x7f090047;
         public static final int split_action_bar=0x7f090004;
         public static final int submit_area=0x7f09003c;
         public static final int tabMode=0x7f09000c;
